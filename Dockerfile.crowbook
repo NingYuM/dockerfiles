@@ -12,7 +12,7 @@ LABEL authors="Justin Ma <hustcer@outlook.com>"
 # Use mirrors to speed up installation
 RUN apt update \
   && apt upgrade -y \
-  && apt install aria2 curl xz-utils -y --no-install-recommends --no-install-suggests \
+  && apt install aria2 curl xz-utils zip -y --no-install-recommends --no-install-suggests \
   # Make /bin/sh symlink to bash instead of dash:
   # REF: https://groups.google.com/g/linux.debian.user/c/2CyfM5UrSOI?pli=1
   && dpkg-divert --remove --no-rename /usr/share/man/man1/sh.1.gz \
