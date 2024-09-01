@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'alpine-nushell/Dockerfile'
+      - 'debian-nushell/Dockerfile'
   workflow_dispatch:
 
 jobs:
@@ -30,9 +30,9 @@ jobs:
       - name: Build and push default image
         uses: docker/build-push-action@v6
         with:
-          context: ./alpine-nushell
-          file: ./alpine-nushell/Dockerfile
-          platforms: linux/amd64
+          context: ./debian-nushell
+          file: ./debian-nushell/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             hustcer/nushell:0.97.1
