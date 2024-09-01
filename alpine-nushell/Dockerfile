@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:latest
+
 # Git: git version 2.30.2
 # /etc/os-release: Alpine Linux v3.16
 # Kernel: Linux ca3abedc4fb1 5.17.15-76051715-generic #202206141358~1655919116~22.04~1db9e34 SMP PREEMPT Wed Jun 22 19 x86_64 Linux
@@ -5,22 +7,27 @@
 # Other tags: hustcer/alpine-nu:latest, nushell
 FROM alpine
 
+ARG TARGETARCH
+ARG ARCH=${TARGETARCH/arm64/aarch64}
+ARG ARCH=${ARCH/amd64/x86_64}
+
 LABEL maintainer=hustcer
 
 RUN echo '/usr/bin/nu' >> /etc/shells \
     && adduser -D -s /usr/bin/nu nushell \
     && mkdir -p /home/nushell/.config/nushell/ \
-    && wget -q https://raw.githubusercontent.com/nushell/nushell/main/crates/nu-utils/src/sample_config/default_config.nu -O /home/nushell/.config/nushell/config.nu \
-    && wget -q https://raw.githubusercontent.com/nushell/nushell/main/crates/nu-utils/src/sample_config/default_env.nu -O /home/nushell/.config/nushell/env.nu \
     && cd /tmp \
-    && wget -qO - https://api.github.com/repos/nushell/nushell/releases/latest \
+    && curl -s https://api.github.com/repos/nushell/nushell/releases/latest \
         | grep browser_download_url \
-        | grep musl.tar.gz \
-        | cut -f4 -d '"' \
-        | xargs -I{} wget {} \
-    && tar -xzf nu* \
-    && cd nu*-musl \
-    && mv nu* /usr/bin \
+        | cut -d '"' -f 4 \
+        | grep ${ARCH}-unknown-linux-gnu \
+        | aria2c -i - \
+    && mkdir nu-latest && tar xvf nu-*.tar.gz --directory=nu-latest \
+    && cp -aR nu-latest/**/* /usr/bin/ \
+    # Setup default config file for nushell
+    && mkdir -p /home/nushell/.config/nushell && cd /home/nushell/.config/nushell \
+    && touch env.nu config.nu \
+    && nu -c 'config reset' \
     && chmod +x /usr/bin/nu \
     && chown -R nushell:nushell /home/nushell/.config/nushell \
     && ls /usr/bin/nu_plugin* \

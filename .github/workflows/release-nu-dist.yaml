@@ -1,0 +1,39 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'alpine-nushell/Dockerfile'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+
+      - name: Build and push default image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./alpine-nushell
+          file: ./alpine-nushell/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            hustcer/nushell:0.97.1
+            hustcer/nushell:latest
