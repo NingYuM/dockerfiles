@@ -5,7 +5,7 @@
 # Kernel: Linux ca3abedc4fb1 5.17.15-76051715-generic #202206141358~1655919116~22.04~1db9e34 SMP PREEMPT Wed Jun 22 19 x86_64 Linux
 # Build cmd: docker build --no-cache . -t hustcer/nushell:latest
 # Other tags: hustcer/debian-nu:latest, nushell
-FROM debian
+FROM debian:trixie-slim
 
 ARG TARGETARCH
 ARG ARCH=${TARGETARCH/arm64/aarch64}
@@ -23,15 +23,17 @@ RUN echo '/usr/bin/nu' >> /etc/shells \
     && mkdir nu-latest && tar xvf nu-*.tar.gz --directory=nu-latest \
     && cp -aR nu-latest/**/* /usr/bin/ \
     # Setup default config file for nushell
-    && mkdir -p /root/.config/nushell && cd /root/.config/nushell \
+    && mkdir -p /home/nushell/.config/nushell && cd /home/nushell/.config/nushell \
     && touch env.nu config.nu \
     && chmod +x /usr/bin/nu \
-    && chown -R nushell:nushell /root/.config/nushell \
+    && chown -R nushell:nushell /home/nushell/.config/nushell \
     && nu -c 'config reset -w' \
     && ls /usr/bin/nu_plugin* | xargs -I{} nu -c 'plugin add {}' nushell \
     && rm -rf /tmp/* \
     && rm -rf /var/lib/apt/lists/* && apt autoremove -y
 
 USER nushell
+
+WORKDIR /home/nushell
 
 ENTRYPOINT ["nu"]
