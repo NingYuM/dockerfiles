@@ -13,11 +13,11 @@ ARG TARGETARCH
 ARG ARCH=${TARGETARCH/arm64/aarch64}
 ARG ARCH=${ARCH/amd64/x86_64}
 
-LABEL maintainer=hustcer<majun@terminus.io>
+LABEL maintainer=hustcer<hustcer@outlook.com>
 
 # Use mirrors to speed up installation
-RUN apt update \
-    && apt upgrade -y \
+RUN apt-get update \
+    && apt-get upgrade -y \
     && apt-get install apt-transport-https ca-certificates locales -y --no-install-recommends --no-install-suggests \
     # Change locale & timezone
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -44,8 +44,8 @@ RUN npm config set @terminus:registry https://registry.npm.terminus.io/ \
     && npm i --location=global pnpm@9 \
     # Fix "Unable to find the global bin directory" error while running `pnpm i -g`
     && pnpm config set global-bin-dir '/usr/local/bin' \
-    && apt update \
-    && apt install -y --no-install-recommends --no-install-suggests wget aria2 curl git unzip ripgrep \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends --no-install-suggests wget aria2 curl git unzip ripgrep \
     && cd /lib; curl -s https://api.github.com/repos/chmln/sd/releases/latest | grep browser_download_url | cut -d '"' -f 4 | grep ${ARCH}-unknown-linux-musl | aria2c -i - \
     && mkdir sd-latest && tar xvf sd-*.tar.gz --directory=sd-latest \
     && cp -aR sd-latest/**/sd /usr/local/bin/; rm -rf sd-* \

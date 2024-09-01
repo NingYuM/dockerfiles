@@ -1,14 +1,14 @@
 # syntax=docker/dockerfile:latest
 
-# Git: git version 2.39.2, gcc: 12.2.0, curl: 7.88.1, Wget: 1.21.3, Python 3.11.2
-# Node: 20.17.0 LTS, npm: 10.8.2, pnpm: 9.9.0, fnm: 1.37.1
+# Git: git version 2.39.2, curl: 7.88.1, Wget: 1.21.3, Python 3.11.2
+# Node: 20.17.0 LTS, npm: 10.8.2, pnpm: 9.9.0, fnm: 1.37.1, gcc: 12.2.0, bash: 5.2.15
 # /etc/os-release: Debian GNU/Linux 12 (bookworm)
-# Linux e2a008c89a1c 6.4.16-linuxkit #1 SMP PREEMPT_DYNAMIC Thu Nov 16 UTC 2023 x86_64 GNU/Linux
-# Build cmd: docker build . -t hustcer/debian-node-20.17 -f Dockerfile.debian.npm.10.8 --no-cache
+# Linux cc755cd59f63 6.10.0-linuxkit #1 SMP Wed Jul 17 10:51:09 UTC 2024 aarch64 GNU/Linux
+# Build cmd: docker build . -t hustcer/debian-node:20.17 --no-cache
 # Other tags: hustcer/debian-node:20.17-lts,hustcer/debian-node:20.17
 FROM node:20.17.0-bookworm-slim
 
-LABEL maintainer=hustcer<majun@terminus.io>
+LABEL maintainer=hustcer<hustcer@outlook.com>
 
 # Use mirrors to speed up installation
 RUN apt-get update \
@@ -36,7 +36,7 @@ ENV SASS_BINARY_SITE="https://npmmirror.com/mirrors/node-sass"
 
 RUN npm config set @terminus:registry https://registry.npm.terminus.io/  \
     && npm config set registry https://registry.npmmirror.com/ \
-    && apt update \
+    && apt-get update \
     && apt-get install -y --no-install-recommends --no-install-suggests \
        git curl wget bzip2 unzip openssh-client gcc make g++ python3 \
     # Make /bin/sh symlink to bash instead of dash:

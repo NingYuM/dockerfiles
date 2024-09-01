@@ -14,11 +14,11 @@ ARG TARGETARCH
 ARG ARCH=${TARGETARCH/arm64/aarch64}
 ARG ARCH=${ARCH/amd64/x86_64}
 
-LABEL maintainer=hustcer<majun@terminus.io>
+LABEL maintainer=hustcer<hustcer@outlook.com>
 
 # Use mirrors to speed up installation
-RUN apt update \
-    && apt upgrade -y \
+RUN apt-get update \
+    && apt-get upgrade -y \
     # Install sg
     && pnpm install --global @ast-grep/cli \
     # Install fd

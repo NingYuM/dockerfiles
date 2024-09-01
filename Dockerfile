@@ -10,9 +10,9 @@ LABEL title="hustcer/xelatex"
 LABEL authors="Justin Ma <hustcer@outlook.com>"
 
 # Use mirrors to speed up installation
-RUN apt update \
-    && apt upgrade -y \
-    && apt install apt-transport-https ca-certificates locales -y --no-install-recommends --no-install-suggests \
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install apt-transport-https ca-certificates locales -y --no-install-recommends --no-install-suggests \
     && echo 'deb https://mirrors.aliyun.com/debian/ bookworm main non-free non-free-firmware contrib' > /etc/apt/sources.list \
     && echo 'deb https://mirrors.aliyun.com/debian-security/ bookworm-security main' >> /etc/apt/sources.list \
     && echo 'deb https://mirrors.aliyun.com/debian/ bookworm-updates main non-free non-free-firmware contrib' >> /etc/apt/sources.list \
