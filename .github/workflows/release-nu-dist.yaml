@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Nushell Official Release Binaries
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  build-and-push-Nu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -32,7 +32,7 @@ jobs:
         with:
           context: ./alpine-nushell
           file: ./alpine-nushell/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           tags: |
             hustcer/nushell:0.97.1
