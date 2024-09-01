@@ -1,11 +1,11 @@
-# version   : "2.0.0"
+# version   : "2.1.0"
 # title     : hustcer/xelatex
 # author    : "Justin Ma" <hustcer@outlook.com>
 # Build cmd : docker build . -t hustcer/xelatex
-# Other tags: hustcer/xelatex:v2
+# Other tags: hustcer/xelatex:v2.1
 FROM debian:bookworm-slim
 
-LABEL version="2.0.0"
+LABEL version="2.1.0"
 LABEL title="hustcer/xelatex"
 LABEL authors="Justin Ma <hustcer@outlook.com>"
 
