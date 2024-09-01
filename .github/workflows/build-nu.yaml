@@ -13,7 +13,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set up QEMU
@@ -28,7 +28,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
 
-      - name: Build and push default image
+      - name: Build and Push Default Image
         uses: docker/build-push-action@v6
         with:
           context: ./node.20-nu.latest
@@ -39,7 +39,7 @@ jobs:
             hustcer/debian-nu:0.97-node.20.17.lts
             hustcer/debian-nu:latest
 
-      - name: Build and push extra image
+      - name: Build and Push Extra Image
         uses: docker/build-push-action@v6
         with:
           context: ./node.20-nu.latest-extra

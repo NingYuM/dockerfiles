@@ -12,7 +12,7 @@ jobs:
   build-and-push-node:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set up QEMU
@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
 
-      - name: Build and push default image
+      - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
           context: ./debian-node
