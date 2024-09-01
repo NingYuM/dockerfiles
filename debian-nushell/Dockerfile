@@ -5,7 +5,7 @@
 # Kernel: Linux ca3abedc4fb1 5.17.15-76051715-generic #202206141358~1655919116~22.04~1db9e34 SMP PREEMPT Wed Jun 22 19 x86_64 Linux
 # Build cmd: docker build --no-cache . -t hustcer/nushell:latest
 # Other tags: hustcer/debian-nu:latest, nushell
-FROM debian:trixie-slim
+FROM debian
 
 ARG TARGETARCH
 ARG ARCH=${TARGETARCH/arm64/aarch64}
