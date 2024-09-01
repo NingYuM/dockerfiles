@@ -10,6 +10,7 @@ FROM debian
 ARG TARGETARCH
 ARG ARCH=${TARGETARCH/arm64/aarch64}
 ARG ARCH=${ARCH/amd64/x86_64}
+ARG ARCH=${ARCH/riscv64/riscv64gc}
 
 LABEL maintainer=hustcer
 
@@ -17,7 +18,7 @@ RUN echo '/usr/bin/nu' >> /etc/shells \
     && adduser --disabled-password --shell /usr/bin/nu --gecos "" nushell \
     && cd /tmp \
     && apt-get update && apt-get upgrade -y \
-    && apt-get install curl aria2 -y --no-install-recommends --no-install-suggests \
+    && apt-get install apt-transport-https ca-certificates curl aria2 -y --no-install-recommends --no-install-suggests \
     && curl -s https://api.github.com/repos/nushell/nushell/releases/latest | grep browser_download_url | cut -d '"' -f 4 | grep ${ARCH}-unknown-linux-gnu | aria2c -i - \
     && mkdir nu-latest && tar xvf nu-*.tar.gz --directory=nu-latest \
     && cp -aR nu-latest/**/* /usr/bin/ \
