@@ -37,3 +37,5 @@ jobs:
           tags: |
             hustcer/nushell:0.97.1
             hustcer/nushell:latest
+            hustcer/nushell:0.97.1-alpine
+            hustcer/nushell:latest-alpine
