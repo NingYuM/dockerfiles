@@ -30,12 +30,12 @@ jobs:
       - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
+          push: true
           context: ./debian-herd
           file: ./debian-herd/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
           tags: |
-            hustcer/debian-herd:1.1.27-n20.17-lts
             hustcer/debian-herd:latest
+            hustcer/debian-herd:1.1.27-n20.17-lts
 
 

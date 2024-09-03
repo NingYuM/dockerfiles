@@ -31,20 +31,20 @@ jobs:
       - name: Build and Push Default Image
         uses: docker/build-push-action@v6
         with:
+          push: true
           context: ./node.20-nu.latest
           file: ./node.20-nu.latest/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
           tags: |
-            hustcer/debian-nu:0.97-node.20.17.lts
             hustcer/debian-nu:latest
+            hustcer/debian-nu:0.97-node.20.17.lts
 
       - name: Build and Push Extra Image
         uses: docker/build-push-action@v6
         with:
+          push: true
           context: ./node.20-nu.latest-extra
           file: ./node.20-nu.latest-extra/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
           tags: |
             hustcer/debian-nu:0.97-node.20.17-extra

@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:latest
 
 # Git: git version 2.30.2
-# /etc/os-release: Alpine Linux v3.16
+# /etc/os-release: Alpine Linux v3.20
 # Kernel: Linux ca3abedc4fb1 5.17.15-76051715-generic #202206141358~1655919116~22.04~1db9e34 SMP PREEMPT Wed Jun 22 19 x86_64 Linux
 # Build cmd: docker build --no-cache . -t hustcer/nushell:latest
-# Other tags: hustcer/alpine-nu:latest, nushell
+# Other tags: hustcer/nushell:latest-alpine, nushell
 FROM alpine
 
 ARG TARGETARCH

@@ -30,10 +30,10 @@ jobs:
       - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
+          push: true
           context: ./crowbook.latest
           file: ./crowbook.latest/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
           tags: |
             hustcer/crowbook:v2.2
             hustcer/crowbook:latest

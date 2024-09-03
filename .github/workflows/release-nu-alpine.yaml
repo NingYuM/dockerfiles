@@ -30,10 +30,10 @@ jobs:
       - name: Build and Push Alpine Image
         uses: docker/build-push-action@v6
         with:
+          push: true
+          platforms: linux/amd64
           context: ./alpine-nushell
           file: ./alpine-nushell/Dockerfile
-          platforms: linux/amd64
-          push: true
           tags: |
             hustcer/nushell:0.97.1
             hustcer/nushell:latest
