@@ -18,20 +18,18 @@ RUN echo '/usr/bin/nu' >> /etc/shells \
     && mkdir -p /home/nushell/.config/nushell/ \
     && cd /tmp \
     && wget -qO - https://api.github.com/repos/nushell/nushell/releases/latest \
-        | grep browser_download_url \
-        | cut -d '"' -f 4 \
-        | grep ${ARCH}-unknown-linux-musl \
-        | xargs -I{} wget {} \
+    | grep browser_download_url \
+    | cut -d '"' -f 4 \
+    | grep ${ARCH}-unknown-linux-musl \
+    | xargs -I{} wget {} \
     && mkdir nu-latest && tar xvf nu-*.tar.gz --directory=nu-latest \
     && cp -aR nu-latest/**/* /usr/bin/ \
     # Setup default config file for nushell
     && cd /home/nushell/.config/nushell \
-    && touch env.nu config.nu \
     && chmod +x /usr/bin/nu \
     && chown -R nushell:nushell /home/nushell/.config/nushell \
-    && nu -c 'config reset -w' \
-    && ls /usr/bin/nu_plugin* \
-        | xargs -I{} su -c 'plugin add {}' nushell \
+    && su -c 'config reset -w' nushell \
+    && ls /usr/bin/nu_plugin* | xargs -I{} su -c 'plugin add {}' nushell \
     && rm -rf /tmp/*
 
 USER nushell
