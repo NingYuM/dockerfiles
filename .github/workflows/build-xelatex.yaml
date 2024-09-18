@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'xelatex.latest/Dockerfile'
+      - xelatex.latest/Dockerfile
+      - .github/workflows/build-xelatex.yaml
   workflow_dispatch:
 
 jobs:

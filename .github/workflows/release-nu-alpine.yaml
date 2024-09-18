@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'alpine-nushell/Dockerfile'
+      - alpine-nushell/Dockerfile
+      - .github/workflows/release-nu-alpine.yaml
   workflow_dispatch:
 
 jobs:
@@ -31,11 +32,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           context: ./alpine-nushell
           file: ./alpine-nushell/Dockerfile
           tags: |
-            hustcer/nushell:0.97.1
+            hustcer/nushell:0.98.0
             hustcer/nushell:latest
-            hustcer/nushell:0.97.1-alpine
+            hustcer/nushell:0.98.0-alpine
             hustcer/nushell:latest-alpine

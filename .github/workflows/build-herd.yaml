@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'debian-herd/Dockerfile'
+      - debian-herd/Dockerfile
+      - .github/workflows/build-herd.yaml
   workflow_dispatch:
 
 jobs:

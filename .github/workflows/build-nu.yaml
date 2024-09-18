@@ -5,8 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'node.20-nu.latest/Dockerfile'
-      - 'node.20-nu.latest-extra/Dockerfile'
+      - node.20-nu.latest/Dockerfile
+      - node.20-nu.latest-extra/Dockerfile
+      - .github/workflows/build-nu.yaml
   workflow_dispatch:
 
 jobs:
@@ -37,7 +38,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: |
             hustcer/debian-nu:latest
-            hustcer/debian-nu:0.97-node.20.17.lts
+            hustcer/debian-nu:0.98-node.20.17.lts
 
       - name: Build and Push Extra Image
         uses: docker/build-push-action@v6
@@ -47,4 +48,4 @@ jobs:
           file: ./node.20-nu.latest-extra/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            hustcer/debian-nu:0.97-node.20.17-extra
+            hustcer/debian-nu:0.98-node.20.17-extra

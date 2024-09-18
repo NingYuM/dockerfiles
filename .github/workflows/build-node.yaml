@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'debian-node/Dockerfile'
+      - debian-node/Dockerfile
+      - .github/workflows/build-node.yaml
   workflow_dispatch:
 
 jobs:

@@ -3,7 +3,7 @@
 # /etc/os-release: Debian GNU/Linux 12 (bookworm)
 # Kernel: Linux c02c605f827d 6.10.0-linuxkit #1 SMP Wed Jul 17 10:51:09 UTC 2024 aarch64 GNU/Linux
 # Build cmd: docker build --no-cache . -t hustcer/nushell:latest
-# Other tags: hustcer/nushell:0.97.1-debian
+# Other tags: hustcer/nushell:0.98.0-debian
 FROM debian:bookworm-slim
 
 ARG TARGETARCH

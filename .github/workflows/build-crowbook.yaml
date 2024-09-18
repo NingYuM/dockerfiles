@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'crowbook.latest/Dockerfile'
+      - crowbook.latest/Dockerfile
+      - .github/workflows/build-crowbook.yaml
   workflow_dispatch:
 
 jobs:
