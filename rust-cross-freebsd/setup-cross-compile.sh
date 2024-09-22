@@ -49,6 +49,7 @@ export CXX_$(echo "${RUSTC_TRIPLE}" | sed s/-/_/g)=/usr/local/bin/${CLANG_TRIPLE
 EOF"
 
 chmod 777 /home/rust/.cargo
+sudo chown -R rust:rust /home/rust/.rustup
 
 # Cleanup
 # shellcheck disable=SC2086
