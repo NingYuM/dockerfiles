@@ -50,6 +50,7 @@ EOF"
 
 chmod 777 /home/rust/.cargo
 chmod 777 /home/rust/.rustup
+chmod -R 777 /home/rust/.rustup/tmp
 
 rm /usr/bin/ld
 ln -s /usr/bin/ld.lld /usr/bin/ld
