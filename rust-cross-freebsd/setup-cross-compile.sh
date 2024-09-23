@@ -48,9 +48,12 @@ export CC_$(echo "${RUSTC_TRIPLE}" | sed s/-/_/g)=/usr/bin/${CLANG_TRIPLE}-clang
 export CXX_$(echo "${RUSTC_TRIPLE}" | sed s/-/_/g)=/usr/bin/${CLANG_TRIPLE}-clang++
 EOF"
 
+# Fix the following potential error:
+# error: component download failed for cargo-x86_64-unknown-linux-gnu: error opening file for download
 chmod -R 777 /home/rust/.cargo
+# Fix the following potential error:
+# error: could not create temp file /home/rust/.rustup/tmp/8i35_4tuli9hx7cf_file: Permission denied (os error 13)
 chmod -R 777 /home/rust/.rustup
-chmod -R 777 /home/rust/.rustup/tmp
 
 rm /usr/bin/ld
 ln -s /usr/bin/ld.lld /usr/bin/ld
