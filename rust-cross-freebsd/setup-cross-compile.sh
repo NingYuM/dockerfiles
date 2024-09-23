@@ -48,8 +48,8 @@ export CC_$(echo "${RUSTC_TRIPLE}" | sed s/-/_/g)=/usr/bin/${CLANG_TRIPLE}-clang
 export CXX_$(echo "${RUSTC_TRIPLE}" | sed s/-/_/g)=/usr/bin/${CLANG_TRIPLE}-clang++
 EOF"
 
-chmod 777 /home/rust/.cargo
-chmod 777 /home/rust/.rustup
+chmod -R 777 /home/rust/.cargo
+chmod -R 777 /home/rust/.rustup
 chmod -R 777 /home/rust/.rustup/tmp
 
 rm /usr/bin/ld
