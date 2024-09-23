@@ -1,15 +1,16 @@
 # Docker Rust FreeBSD Target ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/hustcer/rust-cross-freebsd)
 
-This Docker image is used to cross compile Rust for FreeBSD.
+This Docker image is used to cross compile Rust for FreeBSD, currently only `x86_64` architecture is supported.
+And the `rust-toolchain.toml` in your project directory will be respected to install the Rust version specified.
 
 ## Usage
 
 ### General Example
 In the directory containing your project run:
 ```shell
-    docker container run --rm --volume "$(pwd)":/src     \
+    docker container run --rm --volume "$(pwd)":/src \
         --init --tty --user "$(id --user):$(id --group)" \
-        "hustcer/rust-cross-freebsd:latest"      \
+        "hustcer/rust-cross-freebsd:latest" \
         build --release --target x86_64-unknown-freebsd
 ```
 
