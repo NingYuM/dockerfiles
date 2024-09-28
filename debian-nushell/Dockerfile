@@ -15,7 +15,19 @@ ARG ARCH=${ARCH/arm/armv7}
 ARG ARCH=${ARCH/amd64/x86_64}
 ARG ARCH=${ARCH/riscv64/riscv64gc}
 
-LABEL maintainer=hustcer
+ARG BUILD_REF
+ARG BUILD_DATE
+LABEL maintainer="hustcer <hustcer@outlook.com>" \
+    org.opencontainers.image.authors="Nushell Team" \
+    org.opencontainers.image.vendor="Nushell Project" \
+    org.opencontainers.image.licenses="MIT" \
+    org.opencontainers.image.created=$BUILD_DATE \
+    org.opencontainers.image.revision=$BUILD_REF \
+    org.opencontainers.image.title="Nushell Image Based on Alpine Linux" \
+    org.opencontainers.image.description="A new type of shell" \
+    org.opencontainers.image.documentation="https://nushell.sh" \
+    org.opencontainers.image.source="https://github.com/hustcer/dockerfiles" \
+    io.artifacthub.package.readme-url="https://github.com/nushell/nushell/blob/main/README.md"
 
 RUN echo '/usr/bin/nu' >> /etc/shells \
     && adduser --disabled-password --shell /usr/bin/nu --gecos "" nushell \

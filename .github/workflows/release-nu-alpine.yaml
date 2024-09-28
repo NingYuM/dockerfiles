@@ -38,6 +38,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # date now | format date "%Y-%m-%dT%H:%M:%SZ"
+      - name: "Set tag & labels for ${{ github.ref }}"
+        run: |
+          if [ "$GITHUB_REF" == "refs/heads/master" ]; then
+          echo "DOCKER_TAG=latest" >> $GITHUB_ENV
+          else
+          echo "DOCKER_TAG=snapshot" >> $GITHUB_ENV
+          fi
+          echo "BUILD_REF=`git rev-parse --short HEAD`" >> $GITHUB_ENV
+          echo "BUILD_DATE=2024-09-28T23:35:20Z" >> $GITHUB_ENV
+
       - name: Build and Push Alpine Image
         uses: docker/build-push-action@v6
         with:
@@ -45,6 +56,9 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           context: ./alpine-nushell
           file: ./alpine-nushell/Dockerfile
+          build-args: |
+            BUILD_REF=${{ env.BUILD_REF }}
+            BUILD_DATE=${{ env.BUILD_DATE }}
           tags: |
             hustcer/nushell:0.98.0
             hustcer/nushell:latest
