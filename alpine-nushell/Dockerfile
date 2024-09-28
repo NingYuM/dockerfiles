@@ -9,6 +9,7 @@ FROM alpine
 
 ARG TARGETARCH
 ARG ARCH=${TARGETARCH/arm64/aarch64}
+ARG ARCH=${ARCH/arm/armv7}
 ARG ARCH=${ARCH/amd64/x86_64}
 
 LABEL maintainer=hustcer
