@@ -11,9 +11,9 @@ COPY install-freebsd.sh setup-cross-compile.sh /tmp/
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    && /tmp/install-freebsd.sh \
+    /tmp/install-freebsd.sh \
     && /tmp/setup-cross-compile.sh \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Final Stage
 FROM debian:bookworm-slim
