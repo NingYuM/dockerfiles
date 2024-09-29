@@ -12,6 +12,9 @@ on:
 jobs:
   build-and-push-node:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -28,6 +31,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
@@ -38,5 +48,7 @@ jobs:
           tags: |
             hustcer/debian-node:latest
             hustcer/debian-node:20.17-lts
+            ghcr.io/hustcer/debian-node:latest
+            ghcr.io/hustcer/debian-node:20.17-lts
 
 
