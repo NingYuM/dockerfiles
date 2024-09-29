@@ -66,9 +66,9 @@ jobs:
           tags: |
             hustcer/nushell:latest
             hustcer/nushell:latest-alpine
-            hustcer/nushell:${{ env.NU_VERSION }}-alpine
+            hustcer/nushell:${{ env.NU_VERSION }}
             hustcer/nushell:${{ env.NU_VERSION }}-alpine
             ghcr.io/hustcer/nushell:latest
             ghcr.io/hustcer/nushell:latest-alpine
-            ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}-alpine
+            ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}
             ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}-alpine
