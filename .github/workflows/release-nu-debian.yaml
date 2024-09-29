@@ -19,6 +19,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set up Nushell
+        uses: hustcer/setup-nu@v3
+        with:
+          check-latest: true
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -39,14 +44,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Set tag & labels for ${{ github.ref }}"
+        shell: nu {0}
         run: |
-          if [ "$GITHUB_REF" == "refs/heads/master" ]; then
-          echo "DOCKER_TAG=latest" >> $GITHUB_ENV
-          else
-          echo "DOCKER_TAG=snapshot" >> $GITHUB_ENV
-          fi
-          echo "BUILD_REF=`git rev-parse --short HEAD`" >> $GITHUB_ENV
-          echo "BUILD_DATE=2024-09-28T23:35:20Z" >> $GITHUB_ENV
+          $'BUILD_REF=(git rev-parse --short HEAD)(char nl)' o>> $env.GITHUB_ENV
+          $'BUILD_DATE=(date now | format date %Y-%m-%dT%H:%M:%SZ)(char nl)' o>> $env.GITHUB_ENV
 
       - name: Build and Push Debian Image
         uses: docker/build-push-action@v6
