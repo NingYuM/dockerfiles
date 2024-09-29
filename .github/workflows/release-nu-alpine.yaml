@@ -48,6 +48,9 @@ jobs:
         run: |
           $'BUILD_REF=(git rev-parse --short HEAD)(char nl)' o>> $env.GITHUB_ENV
           $'BUILD_DATE=(date now | format date %Y-%m-%dT%H:%M:%SZ)(char nl)' o>> $env.GITHUB_ENV
+          let tagName = http get https://api.github.com/repos/nushell/nushell/releases
+                          | sort-by -r created_at | select tag_name | get tag_name.0
+          $'NU_VERSION=($tagName)(char nl)' o>> $env.GITHUB_ENV
 
       - name: Build and Push Alpine Image
         uses: docker/build-push-action@v6
@@ -59,12 +62,13 @@ jobs:
           build-args: |
             BUILD_REF=${{ env.BUILD_REF }}
             BUILD_DATE=${{ env.BUILD_DATE }}
+            NU_VERSION=${{ env.NU_VERSION }}
           tags: |
-            hustcer/nushell:0.98.0
             hustcer/nushell:latest
-            hustcer/nushell:0.98.0-alpine
             hustcer/nushell:latest-alpine
-            ghcr.io/hustcer/nushell:0.98.0
+            hustcer/nushell:${{ env.NU_VERSION }}-alpine
+            hustcer/nushell:${{ env.NU_VERSION }}-alpine
             ghcr.io/hustcer/nushell:latest
-            ghcr.io/hustcer/nushell:0.98.0-alpine
             ghcr.io/hustcer/nushell:latest-alpine
+            ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}-alpine
+            ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}-alpine
