@@ -23,8 +23,8 @@ LABEL maintainer="hustcer <hustcer@outlook.com>" \
     org.opencontainers.image.title="Nushell Image Based on Alpine Linux" \
     org.opencontainers.image.description="A new type of shell" \
     org.opencontainers.image.documentation="https://nushell.sh" \
-    org.opencontainers.image.source="https://github.com/hustcer/dockerfiles" \
-    io.artifacthub.package.readme-url="https://github.com/nushell/nushell/blob/main/README.md"
+    org.opencontainers.image.source="https://github.com/nushell/nushell" \
+    io.artifacthub.package.readme-url="https://raw.githubusercontent.com/nushell/nushell/refs/heads/main/README.md"
 
 RUN echo '/usr/bin/nu' >> /etc/shells \
     && adduser -D -s /usr/bin/nu nushell \
