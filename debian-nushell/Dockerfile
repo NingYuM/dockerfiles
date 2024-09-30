@@ -18,12 +18,12 @@ ARG ARCH=${ARCH/riscv64/riscv64gc}
 ARG BUILD_REF
 ARG BUILD_DATE
 LABEL maintainer="hustcer <hustcer@outlook.com>" \
-    org.opencontainers.image.authors="Nushell Team" \
-    org.opencontainers.image.vendor="Nushell Project" \
     org.opencontainers.image.licenses="MIT" \
+    org.opencontainers.image.title="Nushell" \
     org.opencontainers.image.created=$BUILD_DATE \
     org.opencontainers.image.revision=$BUILD_REF \
-    org.opencontainers.image.title="Nushell Image Based on Alpine Linux" \
+    org.opencontainers.image.authors="Nushell Team" \
+    org.opencontainers.image.vendor="Nushell Project" \
     org.opencontainers.image.description="A new type of shell" \
     org.opencontainers.image.documentation="https://nushell.sh" \
     org.opencontainers.image.source="https://github.com/nushell/nushell" \
