@@ -14,16 +14,16 @@ ARG ARCH=${ARCH/amd64/x86_64}
 
 ARG BUILD_REF
 ARG BUILD_DATE
-LABEL maintainer="hustcer <hustcer@outlook.com>" \
+LABEL maintainer="The Nushell Project Developers" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.title="Nushell" \
     org.opencontainers.image.created=$BUILD_DATE \
     org.opencontainers.image.revision=$BUILD_REF \
-    org.opencontainers.image.authors="Nushell Team" \
     org.opencontainers.image.vendor="Nushell Project" \
     org.opencontainers.image.description="A new type of shell" \
-    org.opencontainers.image.documentation="https://nushell.sh" \
+    org.opencontainers.image.authors="The Nushell Project Developers" \
     org.opencontainers.image.source="https://github.com/nushell/nushell" \
+    org.opencontainers.image.documentation="https://www.nushell.sh/book/" \
     io.artifacthub.package.readme-url="https://raw.githubusercontent.com/nushell/nushell/refs/heads/main/README.md"
 
 RUN echo '/usr/bin/nu' >> /etc/shells \
@@ -41,8 +41,10 @@ RUN echo '/usr/bin/nu' >> /etc/shells \
     && cd /home/nushell/.config/nushell \
     && chmod +x /usr/bin/nu \
     && chown -R nushell:nushell /home/nushell/.config/nushell \
+    # Reset Nushell config to default
     && su -c 'config reset -w' nushell \
-    && ls /usr/bin/nu_plugin* | xargs -I{} su -c 'plugin add {}' nushell \
+    && ls /usr/bin/nu_plugin* \
+    | xargs -I{} su -c 'plugin add {}' nushell \
     && rm -rf /tmp/*
 
 USER nushell
