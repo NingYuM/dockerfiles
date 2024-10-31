@@ -62,3 +62,19 @@ jobs:
           tags: |
             hustcer/debian-nu:0.99-node.20.17-extra
             ghcr.io/hustcer/debian-nu:0.99-node.20.17-extra
+
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: build-and-push
+    steps:
+      - name: Delete all containers from repository without tags
+        uses: Chizkiyahu/delete-untagged-ghcr-action@v4
+        with:
+          owner_type: user
+          untagged_only: true
+          package_name: 'debian-nu'
+          repository_owner: 'hustcer'
+          token: ${{ secrets.GITHUB_TOKEN }}
