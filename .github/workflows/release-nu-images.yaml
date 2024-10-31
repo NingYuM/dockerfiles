@@ -9,7 +9,8 @@ on:
       - debian-nushell/Dockerfile
       - .github/workflows/release-nu-images.yaml
   schedule:
-    - cron: '15 2 * * *' # run at 02:15 AM UTC
+    # Run at 00:00 AM UTC for every Tuesday and Friday
+    - cron: '0 0 * * 2,5'
   workflow_dispatch:
 
 jobs:
