@@ -18,6 +18,8 @@ ARG ARCH=${ARCH/riscv64/riscv64gc}
 
 ARG BUILD_REF
 ARG BUILD_DATE
+ARG RELEASE_QUERY_API="https://api.github.com/repos/nushell/nushell/releases/latest"
+
 LABEL maintainer="The Nushell Project Developers" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.title="Nushell" \
@@ -32,7 +34,7 @@ LABEL maintainer="The Nushell Project Developers" \
 
 RUN apt-get update && apt-get install -y wget \
     && cd /tmp \
-    && wget -qO - https://api.github.com/repos/nushell/nushell/releases/latest \
+    && wget -qO - ${RELEASE_QUERY_API} \
     | grep browser_download_url \
     | cut -d '"' -f 4 \
     | grep ${ARCH}-unknown-linux-gnu \
