@@ -54,8 +54,7 @@ RUN apt-get update && apt-get install -y wget \
     && ls /usr/bin/nu_plugin* \
     | xargs -I{} su -c 'plugin add {}' nushell \
     && rm -rf /tmp/* \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt autoremove -y
+    && rm -rf /var/lib/apt/lists/*
 
 USER nushell
 
