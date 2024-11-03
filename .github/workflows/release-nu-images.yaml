@@ -162,3 +162,4 @@ jobs:
           package_name: 'nushell'
           repository_owner: 'hustcer'
           token: ${{ secrets.GITHUB_TOKEN }}
+          except_untagged_multiplatform: true

@@ -66,3 +66,4 @@ jobs:
           package_name: 'debian-node'
           repository_owner: 'hustcer'
           token: ${{ secrets.GITHUB_TOKEN }}
+          except_untagged_multiplatform: true
