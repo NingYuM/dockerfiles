@@ -59,7 +59,7 @@ jobs:
 
       - name: "Set tag & labels for ${{ github.ref }}"
         run: |
-          let version = ${{ github.event.inputs.release-version }} | default ''
+          let version = '${{ github.event.inputs.release-version }}' | default ''
           let latestTag = http get https://api.github.com/repos/nushell/nushell/releases
                           | sort-by -r created_at | select tag_name | get tag_name.0
           let tagName = if ($version | is-empty) { $latestTag } else { $version }
