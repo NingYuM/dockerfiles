@@ -63,12 +63,14 @@ jobs:
           let latestTag = http get https://api.github.com/repos/nushell/nushell/releases
                           | sort-by -r created_at | select tag_name | get tag_name.0
           let tagName = if ($version | is-empty) { $latestTag } else { $version }
+          let updateLatest = if ($tagName == $latestTag) { 'Y' } else { 'N' }
           let queryApi = http get https://api.github.com/repos/nushell/nushell/releases
                           | where tag_name == $tagName | get 0.url
           let SHA = http get https://api.github.com/repos/nushell/nushell/git/ref/tags/($tagName)
                           | get object.sha | str substring 0..7
           $'BUILD_REF=($SHA)(char nl)' o>> $env.GITHUB_ENV
           $'NU_VERSION=($tagName)(char nl)' o>> $env.GITHUB_ENV
+          $'UPDATE_LATEST=($updateLatest)(char nl)' o>> $env.GITHUB_ENV
           $'RELEASE_QUERY_API=($queryApi)(char nl)' o>> $env.GITHUB_ENV
           $'BUILD_DATE=(date now | format date %Y-%m-%dT%H:%M:%SZ)(char nl)' o>> $env.GITHUB_ENV
 
@@ -108,9 +110,11 @@ jobs:
             NU_VERSION=${{ env.NU_VERSION }}
             RELEASE_QUERY_API=${{ env.RELEASE_QUERY_API }}
           tags: |
-            hustcer/nushell:latest-bookworm
+            if (${{ env.UPDATE_LATEST }} == 'Y') {
+              hustcer/nushell:latest-bookworm
+              ghcr.io/hustcer/nushell:latest-bookworm
+            }
             hustcer/nushell:${{ env.NU_VERSION }}-bookworm
-            ghcr.io/hustcer/nushell:latest-bookworm
             ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}-bookworm
 
       - name: Build Alpine Test Image
@@ -148,12 +152,14 @@ jobs:
             NU_VERSION=${{ env.NU_VERSION }}
             RELEASE_QUERY_API=${{ env.RELEASE_QUERY_API }}
           tags: |
-            hustcer/nushell:latest
-            hustcer/nushell:latest-alpine
+            if (${{ env.UPDATE_LATEST }} == 'Y') {
+              hustcer/nushell:latest
+              hustcer/nushell:latest-alpine
+              ghcr.io/hustcer/nushell:latest
+              ghcr.io/hustcer/nushell:latest-alpine
+            }
             hustcer/nushell:${{ env.NU_VERSION }}
             hustcer/nushell:${{ env.NU_VERSION }}-alpine
-            ghcr.io/hustcer/nushell:latest
-            ghcr.io/hustcer/nushell:latest-alpine
             ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}
             ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}-alpine
 
