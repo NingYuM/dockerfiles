@@ -11,6 +11,9 @@ on:
     # Run at 00:00 AM UTC for every Tuesday and Friday
     - cron: '0 0 * * 2,5'
   workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'Release version (e.g. 0.99.0)'
 
 defaults:
   run:
@@ -56,12 +59,17 @@ jobs:
 
       - name: "Set tag & labels for ${{ github.ref }}"
         run: |
-          let tagName = http get https://api.github.com/repos/nushell/nushell/releases
+          let version = ${{ github.event.inputs.release-version }} | default ''
+          let latestTag = http get https://api.github.com/repos/nushell/nushell/releases
                           | sort-by -r created_at | select tag_name | get tag_name.0
+          let tagName = if ($version | is-empty) { $latestTag } else { $version }
+          let queryApi = http get https://api.github.com/repos/nushell/nushell/releases
+                          | where tag_name == $tagName | get 0.url
           let SHA = http get https://api.github.com/repos/nushell/nushell/git/ref/tags/($tagName)
                           | get object.sha | str substring 0..7
           $'BUILD_REF=($SHA)(char nl)' o>> $env.GITHUB_ENV
           $'NU_VERSION=($tagName)(char nl)' o>> $env.GITHUB_ENV
+          $'RELEASE_QUERY_API=($queryApi)(char nl)' o>> $env.GITHUB_ENV
           $'BUILD_DATE=(date now | format date %Y-%m-%dT%H:%M:%SZ)(char nl)' o>> $env.GITHUB_ENV
 
       - name: Build Debian Test Image
@@ -98,6 +106,7 @@ jobs:
             BUILD_REF=${{ env.BUILD_REF }}
             BUILD_DATE=${{ env.BUILD_DATE }}
             NU_VERSION=${{ env.NU_VERSION }}
+            RELEASE_QUERY_API=${{ env.RELEASE_QUERY_API }}
           tags: |
             hustcer/nushell:latest-bookworm
             hustcer/nushell:${{ env.NU_VERSION }}-bookworm
@@ -137,6 +146,7 @@ jobs:
             BUILD_REF=${{ env.BUILD_REF }}
             BUILD_DATE=${{ env.BUILD_DATE }}
             NU_VERSION=${{ env.NU_VERSION }}
+            RELEASE_QUERY_API=${{ env.RELEASE_QUERY_API }}
           tags: |
             hustcer/nushell:latest
             hustcer/nushell:latest-alpine
