@@ -110,12 +110,10 @@ jobs:
             NU_VERSION=${{ env.NU_VERSION }}
             RELEASE_QUERY_API=${{ env.RELEASE_QUERY_API }}
           tags: |
-            if (${{ env.UPDATE_LATEST }} == 'Y') {
-              hustcer/nushell:latest-bookworm
-              ghcr.io/hustcer/nushell:latest-bookworm
-            }
             hustcer/nushell:${{ env.NU_VERSION }}-bookworm
             ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}-bookworm
+            ${{ env.UPDATE_LATEST == 'Y' && 'hustcer/nushell:latest-bookworm' || '' }}
+            ${{ env.UPDATE_LATEST == 'Y' && 'ghcr.io/hustcer/nushell:latest-bookworm' || '' }}
 
       - name: Build Alpine Test Image
         uses: docker/build-push-action@v6
@@ -152,16 +150,14 @@ jobs:
             NU_VERSION=${{ env.NU_VERSION }}
             RELEASE_QUERY_API=${{ env.RELEASE_QUERY_API }}
           tags: |
-            if (${{ env.UPDATE_LATEST }} == 'Y') {
-              hustcer/nushell:latest
-              hustcer/nushell:latest-alpine
-              ghcr.io/hustcer/nushell:latest
-              ghcr.io/hustcer/nushell:latest-alpine
-            }
             hustcer/nushell:${{ env.NU_VERSION }}
             hustcer/nushell:${{ env.NU_VERSION }}-alpine
             ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}
             ghcr.io/hustcer/nushell:${{ env.NU_VERSION }}-alpine
+            ${{ env.UPDATE_LATEST == 'Y' && 'hustcer/nushell:latest' || '' }}
+            ${{ env.UPDATE_LATEST == 'Y' && 'hustcer/nushell:latest-alpine' || '' }}
+            ${{ env.UPDATE_LATEST == 'Y' && 'ghcr.io/hustcer/nushell:latest' || '' }}
+            ${{ env.UPDATE_LATEST == 'Y' && 'ghcr.io/hustcer/nushell:latest-alpine' || '' }}
 
   cleanup:
     runs-on: ubuntu-latest
