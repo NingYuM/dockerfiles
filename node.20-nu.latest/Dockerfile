@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:latest
 
-# Nu: 0.99.0, Node: v20.17.0 LTS, npm: 10.8.2, pnpm: 9.9.0, Git: 2.39.2, fnm 1.37.1
+# Nu: 0.100.0, Node: v20.18.0 LTS, npm: 10.8.2, pnpm: 9.12.3, Git: 2.39.2, fnm 1.37.1
 # GNU bash: 5.2.15, Wget 1.21.3, aria2: 1.36.0, curl: 7.88.1, ripgrep 13.0.0, sd 1.0.0
 # /etc/os-release: Debian GNU/Linux 12 (bookworm)
 # Kernel: Linux bdbfa1bb3a92 6.4.16-linuxkit #1 SMP PREEMPT_DYNAMIC Thu Nov 16 10:55:59 UTC 2023 x86_64 GNU/Linux
-# Build cmd: docker build . -t hustcer/debian-nu:0.99-node.20.17.lts --no-cache
-# docker buildx build --platform linux/amd64,linux/arm64 . -t hustcer/debian-nu:0.99-node.20.17.lts --no-cache
-# Other tags: terminus/debian-nu:0.99-n20.17,terminus/debian-nu:0.99
-FROM node:20.17.0-bookworm-slim
+# Build cmd: docker build . -t hustcer/debian-nu:0.100-node.20.18.lts --no-cache
+# docker buildx build --platform linux/amd64,linux/arm64 . -t hustcer/debian-nu:0.100-node.20.18.lts --no-cache
+# Other tags: terminus/debian-nu:0.100-n20.18,terminus/debian-nu:0.100
+FROM node:20.18.0-bookworm-slim
 
 ARG TARGETARCH
 ARG ARCH=${TARGETARCH/arm64/aarch64}
