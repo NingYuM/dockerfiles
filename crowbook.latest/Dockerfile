@@ -36,7 +36,7 @@ RUN apt-get update \
   && curl -s https://api.github.com/repos/helix-editor/helix/releases/latest | grep browser_download_url | cut -d '"' -f 4 | grep ${ARCH}-linux | aria2c -i - \
   && tar -xf helix*.tar.xz && cp -aR helix-*-linux/* /usr/local/bin/; rm -rf /lib/helix* \
   # Install and setup Crowbook
-  # && aria2c https://github.com/hustcer/crowbook/releases/download/0.16.3/crowbook-0.17.0-x86_64-unknown-linux-gnu.tar.gz \
-  && curl -s https://api.github.com/repos/hustcer/crowbook/releases/latest | grep browser_download_url | cut -d '"' -f 4 | grep linux-gnu | aria2c -i - \
-  && tar -xvf crowbook-*.tar.gz && cp crowbook-*-linux-gnu/* /usr/local/bin/; rm -rf /lib/crowbook* \
+  # && aria2c https://github.com/hustcer/crowbook/releases/download/0.16.3/crowbook-0.17.0-x86_64-unknown-linux-musl.tar.gz \
+  && curl -s https://api.github.com/repos/hustcer/crowbook/releases/latest | grep browser_download_url | cut -d '"' -f 4 | grep ${ARCH}-unknown-linux-musl | aria2c -i - \
+  && tar -xvf crowbook-*.tar.gz && cp crowbook-*-linux-musl/* /usr/local/bin/; rm -rf /lib/crowbook* \
   && rm -rf /var/lib/apt/lists/* && apt autoremove -y
