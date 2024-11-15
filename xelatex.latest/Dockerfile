@@ -1,13 +1,15 @@
-# version   : "2.1.0"
+# version   : "2.2.0"
 # title     : hustcer/xelatex
 # author    : "Justin Ma" <hustcer@outlook.com>
 # Build cmd : docker build . -t hustcer/xelatex
-# Other tags: hustcer/xelatex:v2.1
+# Other tags: hustcer/xelatex:v2.2
 FROM debian:bookworm-slim
 
-LABEL version="2.1.0"
-LABEL title="hustcer/xelatex"
-LABEL authors="Justin Ma <hustcer@outlook.com>"
+LABEL org.opencontainers.image.version="2.2.0"
+LABEL org.opencontainers.image.licenses="GPL-3.0"
+LABEL org.opencontainers.image.title="hustcer/xelatex"
+LABEL org.opencontainers.image.authors="Justin Ma <hustcer@outlook.com>"
+LABEL org.opencontainers.image.description="Docker image for compiling XeLaTeX documents"
 
 # Use mirrors to speed up installation
 RUN apt-get update \
@@ -40,10 +42,13 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install all TeX and LaTeX dependences
 RUN apt-get update \
   && apt-get install --yes --no-install-recommends \
+      ca-certificates \
       git \
+      html2text \
       inotify-tools \
       lmodern \
       make \
+      texlive-extra-utils \
       texlive-fonts-recommended \
       texlive-lang-english \
       texlive-lang-portuguese \

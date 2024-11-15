@@ -36,7 +36,7 @@ jobs:
           file: ./xelatex.latest/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: |
-            hustcer/xelatex:v2.1
+            hustcer/xelatex:v2.2
             hustcer/xelatex:latest
 
 
