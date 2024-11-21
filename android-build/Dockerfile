@@ -39,12 +39,12 @@ ENV CMAKE_BIN_PATH=${ANDROID_HOME}/cmake/$CMAKE_VERSION/bin
 ENV PATH=${CMAKE_BIN_PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/emulator:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${PATH}
 
 # Install system dependencies
-RUN apt update -qq && apt install -qq -y --no-install-recommends \
+RUN apt update -qq && apt install -qq -y --no-install-recommends --no-install-suggests \
         file \
         gcc \
         g++ \
         gnupg2 \
-        libc++1-11 \
+        libc++1 \
         libgl1 \
         libtcmalloc-minimal4 \
         make \
@@ -67,14 +67,13 @@ RUN apt update -qq && apt install -qq -y --no-install-recommends \
         jq \
         shellcheck \
     && gem install bundler \
-    && npm install -g yarn \
-    && rm -rf /var/lib/apt/lists/*;
+    && rm -rf /var/lib/apt/lists/* && apt autoremove -y
 
 RUN curl -sSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-all.zip -o gradle-${GRADLE_VERSION}-bin.zip  \
 	&& unzip gradle-${GRADLE_VERSION}-bin.zip -d ${ANDROID_HOME}  \
 	&& rm -rf gradle-${GRADLE_VERSION}-bin.zip
-ENV GRADLE_HOME ${ANDROID_HOME}/gradle-${GRADLE_VERSION}
-ENV PATH ${GRADLE_HOME}/bin:$PATH
+ENV GRADLE_HOME=${ANDROID_HOME}/gradle-${GRADLE_VERSION}
+ENV PATH=${GRADLE_HOME}/bin:$PATH
 
 # Full reference at https://dl.google.com/android/repository/repository2-1.xml
 # download and unpack android
