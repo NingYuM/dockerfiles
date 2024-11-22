@@ -67,15 +67,19 @@ RUN apt update -qq && apt install -qq -y --no-install-recommends --no-install-su
     && gem install bundler \
     && rm -rf /var/lib/apt/lists/* && apt autoremove -y
 
-RUN curl -sSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-all.zip -o gradle-${GRADLE_VERSION}-bin.zip  \
-	&& unzip gradle-${GRADLE_VERSION}-bin.zip -d ${ANDROID_HOME}  \
-	&& rm -rf gradle-${GRADLE_VERSION}-bin.zip
+# 下载并正确设置 Gradle
+RUN mkdir -p ${ANDROID_HOME}/gradle && curl -sSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-all.zip -o gradle-${GRADLE_VERSION}-all.zip  \
+    && unzip gradle-${GRADLE_VERSION}-all.zip -d ${ANDROID_HOME}/gradle  \
+    # 创建发行版目录
+    && mkdir -p ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions \
+    # 复制到 Wrapper 期望的位置
+    && mv gradle-${GRADLE_VERSION}-all.zip ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions/
 
-ENV GRADLE_HOME=${ANDROID_HOME}/gradle-${GRADLE_VERSION}
+# 设置环境变量
+ENV GRADLE_HOME=${ANDROID_HOME}/gradle/gradle-${GRADLE_VERSION}
+ENV GRADLE_USER_HOME=${ANDROID_HOME}/gradle
 ENV PATH=${GRADLE_HOME}/bin:$PATH
-# Disable Gradle downloading by default
-ENV GRADLE_USER_HOME=/opt/android/gradle-${GRADLE_VERSION}
-ENV GRADLE_OPTS="-Dgradle.user.home=/opt/android/gradle-${GRADLE_VERSION}"
+ENV GRADLE_OPTS="-Dgradle.user.home=${GRADLE_USER_HOME}"
 
 # Full reference at https://dl.google.com/android/repository/repository2-1.xml
 # download and unpack android
