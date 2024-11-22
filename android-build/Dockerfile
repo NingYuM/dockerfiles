@@ -67,15 +67,31 @@ RUN apt update -qq && apt install -qq -y --no-install-recommends --no-install-su
     && gem install bundler \
     && rm -rf /var/lib/apt/lists/* && apt autoremove -y
 
-# 下载并正确设置 Gradle
+# Download and setup Gradle
 RUN mkdir -p ${ANDROID_HOME}/gradle && curl -sSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-all.zip -o gradle-${GRADLE_VERSION}-all.zip  \
     && unzip gradle-${GRADLE_VERSION}-all.zip -d ${ANDROID_HOME}/gradle  \
-    # 创建发行版目录
     && mkdir -p ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions \
-    # 复制到 Wrapper 期望的位置
-    && mv gradle-${GRADLE_VERSION}-all.zip ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions/
+    && mv gradle-${GRADLE_VERSION}-all.zip ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions/ \
+    # Preset Gradle plugin repository
+    && mkdir -p /root/.gradle && \
+    echo "pluginManagement {" > /root/.gradle/init.gradle.kts && \
+    echo "    repositories {" >> /root/.gradle/init.gradle.kts && \
+    echo "        gradlePluginPortal()" >> /root/.gradle/init.gradle.kts && \
+    echo "        google()" >> /root/.gradle/init.gradle.kts && \
+    echo "        mavenCentral()" >> /root/.gradle/init.gradle.kts && \
+    echo "    }" >> /root/.gradle/init.gradle.kts && \
+    echo "}" >> /root/.gradle/init.gradle.kts && \
+    # Add commonly used Maven mirror repositories to speed up build
+    echo "allprojects {" > /root/.gradle/init.gradle && \
+    echo "    repositories {" >> /root/.gradle/init.gradle && \
+    echo "        maven { url 'https://maven.aliyun.com/repository/public' }" >> /root/.gradle/init.gradle && \
+    echo "        maven { url 'https://maven.aliyun.com/repository/google' }" >> /root/.gradle/init.gradle && \
+    echo "        mavenCentral()" >> /root/.gradle/init.gradle && \
+    echo "        google()" >> /root/.gradle/init.gradle && \
+    echo "    }" >> /root/.gradle/init.gradle && \
+    echo "}" >> /root/.gradle/init.gradle
 
-# 设置环境变量
+# Set environment variables for Gradle
 ENV GRADLE_HOME=${ANDROID_HOME}/gradle/gradle-${GRADLE_VERSION}
 ENV GRADLE_USER_HOME=${ANDROID_HOME}/gradle
 ENV PATH=${GRADLE_HOME}/bin:$PATH
@@ -98,5 +114,3 @@ RUN curl -sS https://dl.google.com/android/repository/${SDK_VERSION} -o /tmp/sdk
     && chmod 777 -R /opt/android \
     # Disable git safe directory check as this is causing GHA to fail on GH Runners
     && git config --global --add safe.directory '*'
-
-
