@@ -124,6 +124,37 @@ RUN curl -sS https://dl.google.com/android/repository/${SDK_VERSION} -o /tmp/sdk
     # Disable git safe directory check as this is causing GHA to fail on GH Runners
     && git config --global --add safe.directory '*'
 
+# 创建临时的 build.gradle 来预热更多依赖
+RUN mkdir -p /tmp/warmup && cd /tmp/warmup && \
+    # 创建 settings.gradle
+    echo "pluginManagement {" > settings.gradle && \
+    echo "    repositories {" >> settings.gradle && \
+    echo "        gradlePluginPortal()" >> settings.gradle && \
+    echo "        google()" >> settings.gradle && \
+    echo "        mavenCentral()" >> settings.gradle && \
+    echo "    }" >> settings.gradle && \
+    echo "}" >> settings.gradle && \
+    # 创建 build.gradle
+    echo "buildscript {" > build.gradle && \
+    echo "    repositories {" >> build.gradle && \
+    echo "        google()" >> build.gradle && \
+    echo "        mavenCentral()" >> build.gradle && \
+    echo "        gradlePluginPortal()" >> build.gradle && \
+    echo "    }" >> build.gradle && \
+    echo "    dependencies {" >> build.gradle && \
+    echo "        classpath 'com.android.tools.build:gradle:8.1.0'" >> build.gradle && \
+    echo "        classpath 'com.facebook.react:react-native-gradle-plugin:0.73.0'" >> build.gradle && \
+    echo "        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0'" >> build.gradle && \
+    echo "    }" >> build.gradle && \
+    echo "}" >> build.gradle && \
+    echo "plugins {" >> build.gradle && \
+    echo "    id 'com.android.application' version '8.1.0' apply false" >> build.gradle && \
+    echo "}" >> build.gradle && \
+    # 执行 gradle 预热
+    gradle --no-daemon wrapper && \
+    # 清理
+    rm -rf /tmp/warmup
+
 # 确保所有缓存目录都有正确的权限
 RUN chmod -R 777 /root/.gradle && \
     chmod -R 777 ${ANDROID_HOME} && \
