@@ -4,9 +4,7 @@
 # GNU bash: 5.2.15, Wget 1.21.3, aria2: 1.36.0, curl: 7.88.1, ripgrep 13.0.0, sd 1.0.0
 # /etc/os-release: Debian GNU/Linux 12 (bookworm)
 # Kernel: Linux bdbfa1bb3a92 6.4.16-linuxkit #1 SMP PREEMPT_DYNAMIC Thu Nov 16 10:55:59 UTC 2023 x86_64 GNU/Linux
-# Build cmd: docker build . -t hustcer/debian-nu:0.100-node.20.18.lts --no-cache
-# docker buildx build --platform linux/amd64,linux/arm64 . -t hustcer/debian-nu:0.100-node.20.18.lts --no-cache
-# Other tags: terminus/debian-nu:0.100-n20.18,terminus/debian-nu:0.100
+# Build cmd: docker build . -t hustcer/rn-builder:android35-gradle8.10-jdk17-node20.18 --no-cache
 FROM hustcer/debian-nu:0.100-node.20.18.lts
 
 LABEL maintainer=hustcer<hustcer@outlook.com>
@@ -72,8 +70,12 @@ RUN apt update -qq && apt install -qq -y --no-install-recommends --no-install-su
 RUN curl -sSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-all.zip -o gradle-${GRADLE_VERSION}-bin.zip  \
 	&& unzip gradle-${GRADLE_VERSION}-bin.zip -d ${ANDROID_HOME}  \
 	&& rm -rf gradle-${GRADLE_VERSION}-bin.zip
+
 ENV GRADLE_HOME=${ANDROID_HOME}/gradle-${GRADLE_VERSION}
 ENV PATH=${GRADLE_HOME}/bin:$PATH
+# Disable Gradle downloading by default
+ENV GRADLE_USER_HOME=/opt/android/gradle-${GRADLE_VERSION}
+ENV GRADLE_OPTS="-Dgradle.user.home=/opt/android/gradle-${GRADLE_VERSION}"
 
 # Full reference at https://dl.google.com/android/repository/repository2-1.xml
 # download and unpack android
