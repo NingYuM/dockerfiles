@@ -88,6 +88,8 @@ RUN mkdir -p ${ANDROID_HOME}/gradle && curl -sSL https://services.gradle.org/dis
     echo "        maven { url 'https://maven.aliyun.com/repository/google' }" >> /root/.gradle/init.gradle && \
     echo "        maven { url 'https://maven.aliyun.com/repository/jcenter' }" >> /root/.gradle/init.gradle && \
     echo "        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }" >> /root/.gradle/init.gradle && \
+    echo "        maven { url 'https://maven.aliyun.com/repository/spring' }" >> /root/.gradle/init.gradle && \
+    echo "        maven { url 'https://maven.aliyun.com/repository/spring-plugin' }" >> /root/.gradle/init.gradle && \
     echo "        mavenCentral()" >> /root/.gradle/init.gradle && \
     echo "        google()" >> /root/.gradle/init.gradle && \
     echo "    }" >> /root/.gradle/init.gradle && \
@@ -121,20 +123,6 @@ RUN curl -sS https://dl.google.com/android/repository/${SDK_VERSION} -o /tmp/sdk
     && chmod 777 -R /opt/android \
     # Disable git safe directory check as this is causing GHA to fail on GH Runners
     && git config --global --add safe.directory '*'
-
-# 创建临时的 build.gradle 来预热更多依赖
-RUN mkdir -p /tmp/warmup && cd /tmp/warmup && \
-    # 创建一个最小的 Android 项目结构
-    echo "buildscript { repositories { google(); mavenCentral() } }" > build.gradle && \
-    echo "plugins { id 'com.android.application' version '8.1.0' apply false }" >> build.gradle && \
-    # 添加常用的 RN 依赖
-    echo "dependencies { \
-        classpath 'com.facebook.react:react-native-gradle-plugin:0.73.0' \
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0' \
-    }" >> build.gradle && \
-    # 执行 gradle 预热
-    gradle --no-daemon wrapper && \
-    rm -rf /tmp/warmup
 
 # 确保所有缓存目录都有正确的权限
 RUN chmod -R 777 /root/.gradle && \
