@@ -107,9 +107,9 @@ RUN curl -sS https://dl.google.com/android/repository/${SDK_VERSION} -o /tmp/sdk
 # 确保所有缓存目录都有正确的权限
 RUN chmod -R 777 /root/.gradle \
     && chmod -R 777 ${ANDROID_HOME} \
-    && chmod -R 777 ${GRADLE_USER_HOME} \
+    && chmod -R 777 ${GRADLE_USER_HOME}
     # Docker 容器的 DNS 配置可能不正确，导致无法解析国内镜像的域名
-    && chmod -R 777 /etc/resolv.conf \
-    && echo "nameserver 223.5.5.5" >> /etc/resolv.conf \
-    && echo "nameserver 223.6.6.6" >> /etc/resolv.conf \
-    && chmod -R 644 /etc/resove.conf
+    # && chmod -R 777 /etc/resolv.conf \
+    # && echo "nameserver 223.5.5.5" >> /etc/resolv.conf \
+    # && echo "nameserver 223.6.6.6" >> /etc/resolv.conf \
+    # && chmod -R 644 /etc/resove.conf
