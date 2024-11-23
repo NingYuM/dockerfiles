@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:latest
 
-# Nu: 0.100.0, Node: v20.18.0 LTS, npm: 10.8.2, pnpm: 9.12.3, Git: 2.39.5, fnm 1.37.1
+# Nu: 0.100.0, Node: v20.18.0 LTS, npm: 10.8.2, pnpm: 9.12.3, Git: 2.39.5, fnm 1.37.2
 # GNU bash: 5.2.15, Wget 1.21.3, aria2: 1.36.0, curl: 7.88.1, ripgrep 13.0.0, sd 1.0.0
 # /etc/os-release: Debian GNU/Linux 12 (bookworm)
 # Kernel: Linux bdbfa1bb3a92 6.4.16-linuxkit #1 SMP PREEMPT_DYNAMIC Thu Nov 16 10:55:59 UTC 2023 x86_64 GNU/Linux
@@ -71,29 +71,10 @@ RUN apt update -qq && apt install -qq -y --no-install-recommends --no-install-su
 RUN mkdir -p ${ANDROID_HOME}/gradle && curl -sSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-all.zip -o gradle-${GRADLE_VERSION}-all.zip  \
     && unzip gradle-${GRADLE_VERSION}-all.zip -d ${ANDROID_HOME}/gradle  \
     && mkdir -p ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions \
-    && mv gradle-${GRADLE_VERSION}-all.zip ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions/ \
-    # Preset Gradle plugin repository
-    && mkdir -p /root/.gradle && \
-    echo "pluginManagement {" > /root/.gradle/init.gradle.kts && \
-    echo "    repositories {" >> /root/.gradle/init.gradle.kts && \
-    echo "        gradlePluginPortal()" >> /root/.gradle/init.gradle.kts && \
-    echo "        google()" >> /root/.gradle/init.gradle.kts && \
-    echo "        mavenCentral()" >> /root/.gradle/init.gradle.kts && \
-    echo "    }" >> /root/.gradle/init.gradle.kts && \
-    echo "}" >> /root/.gradle/init.gradle.kts && \
-    # Add commonly used Maven mirror repositories to speed up build
-    echo "allprojects {" > /root/.gradle/init.gradle && \
-    echo "    repositories {" >> /root/.gradle/init.gradle && \
-    echo "        maven { url 'https://maven.aliyun.com/repository/public' }" >> /root/.gradle/init.gradle && \
-    echo "        maven { url 'https://maven.aliyun.com/repository/google' }" >> /root/.gradle/init.gradle && \
-    echo "        maven { url 'https://maven.aliyun.com/repository/jcenter' }" >> /root/.gradle/init.gradle && \
-    echo "        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }" >> /root/.gradle/init.gradle && \
-    echo "        maven { url 'https://maven.aliyun.com/repository/spring' }" >> /root/.gradle/init.gradle && \
-    echo "        maven { url 'https://maven.aliyun.com/repository/spring-plugin' }" >> /root/.gradle/init.gradle && \
-    echo "        mavenCentral()" >> /root/.gradle/init.gradle && \
-    echo "        google()" >> /root/.gradle/init.gradle && \
-    echo "    }" >> /root/.gradle/init.gradle && \
-    echo "}" >> /root/.gradle/init.gradle
+    && mv gradle-${GRADLE_VERSION}-all.zip ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions/
+
+COPY init.gradle /root/.gradle/init.gradle
+COPY init.gradle /root/.gradle/init.gradle.kts
 
 # Set environment variables for Gradle
 ENV GRADLE_HOME=${ANDROID_HOME}/gradle/gradle-${GRADLE_VERSION}
@@ -120,11 +101,13 @@ RUN curl -sS https://dl.google.com/android/repository/${SDK_VERSION} -o /tmp/sdk
         "cmake;$CMAKE_VERSION" \
         "ndk;$NDK_VERSION" \
     && rm -rf ${ANDROID_HOME}/.android \
-    && chmod 777 -R /opt/android \
     # Disable git safe directory check as this is causing GHA to fail on GH Runners
     && git config --global --add safe.directory '*'
 
 # 确保所有缓存目录都有正确的权限
-RUN chmod -R 777 /root/.gradle && \
-    chmod -R 777 ${ANDROID_HOME} && \
-    chmod -R 777 ${GRADLE_USER_HOME}
+RUN chmod -R 777 /root/.gradle \
+    && chmod -R 777 ${ANDROID_HOME} \
+    && chmod -R 777 ${GRADLE_USER_HOME} \
+    # Docker 容器的 DNS 配置可能不正确，导致无法解析国内镜像的域名
+    && echo "nameserver 223.5.5.5" > /etc/resolv.conf \
+    && echo "nameserver 223.6.6.6" >> /etc/resolv.conf
