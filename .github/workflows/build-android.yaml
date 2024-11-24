@@ -45,6 +45,7 @@ jobs:
           password: ${{ secrets.ERDA_REGISTRY_TOKEN }}
           username: ${{ secrets.ERDA_REGISTRY_USERNAME }}
 
+      # rc1: 8.10.2  rc0: 8.11.1 rc2: 7.6.4
       - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
@@ -58,8 +59,7 @@ jobs:
             ghcr.io/hustcer/rn-builder:latest
             ghcr.io/hustcer/rn-builder:android35-gradle8.10-jdk17-node20.18
             erda-registry.cn-hangzhou.cr.aliyuncs.com/terp/rn-builder:latest
-            erda-registry.cn-hangzhou.cr.aliyuncs.com/terp/rn-builder:rc1
-            erda-registry.cn-hangzhou.cr.aliyuncs.com/terp/rn-builder:rc0
+            erda-registry.cn-hangzhou.cr.aliyuncs.com/terp/rn-builder:rc2
             erda-registry.cn-hangzhou.cr.aliyuncs.com/terp/rn-builder:android35-gradle8.10-jdk17-node20.18
 
   cleanup:
