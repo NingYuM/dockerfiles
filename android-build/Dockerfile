@@ -16,8 +16,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 # set default build arguments
 ARG NODE_VERSION=20.18.0
 ARG CMAKE_VERSION=3.22.1
-# https://services.gradle.org/distributions/gradle-8.10.2-all.zip
-ARG GRADLE_VERSION=8.10.2
+# https://services.gradle.org/distributions/gradle-8.11.1-all.zip
+ARG GRADLE_VERSION=8.11.1
 ARG WATCHMAN_VERSION=4.9.0
 ARG ANDROID_BUILD_VERSION=35
 ARG NDK_VERSION=27.1.12297006
@@ -70,8 +70,8 @@ RUN apt update -qq && apt install -qq -y --no-install-recommends --no-install-su
 # Download and setup Gradle
 RUN mkdir -p ${ANDROID_HOME}/gradle && curl -sSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-all.zip -o gradle-${GRADLE_VERSION}-all.zip  \
     && unzip gradle-${GRADLE_VERSION}-all.zip -d ${ANDROID_HOME}/gradle  \
-    && mkdir -p ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions \
-    && mv gradle-${GRADLE_VERSION}-all.zip ${ANDROID_HOME}/gradle/wrapper/dists/gradle-${GRADLE_VERSION}-all/distributions/
+    && mkdir -p ${ANDROID_HOME}/gradle/wrapper/distributions \
+    && mv gradle-${GRADLE_VERSION}-all.zip ${ANDROID_HOME}/gradle/wrapper/distributions/
 
 COPY init.gradle /root/.gradle/init.gradle
 COPY init.gradle /root/.gradle/init.gradle.kts
@@ -108,8 +108,3 @@ RUN curl -sS https://dl.google.com/android/repository/${SDK_VERSION} -o /tmp/sdk
 RUN chmod -R 777 /root/.gradle \
     && chmod -R 777 ${ANDROID_HOME} \
     && chmod -R 777 ${GRADLE_USER_HOME}
-    # Docker 容器的 DNS 配置可能不正确，导致无法解析国内镜像的域名
-    # && chmod -R 777 /etc/resolv.conf \
-    # && echo "nameserver 223.5.5.5" >> /etc/resolv.conf \
-    # && echo "nameserver 223.6.6.6" >> /etc/resolv.conf \
-    # && chmod -R 644 /etc/resove.conf
