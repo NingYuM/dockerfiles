@@ -59,7 +59,7 @@ jobs:
             ghcr.io/hustcer/rn-builder:latest
             ghcr.io/hustcer/rn-builder:android35-gradle8.10-jdk17-node20.18
             erda-registry.cn-hangzhou.cr.aliyuncs.com/terp/rn-builder:latest
-            erda-registry.cn-hangzhou.cr.aliyuncs.com/terp/rn-builder:rc2
+            erda-registry.cn-hangzhou.cr.aliyuncs.com/terp/rn-builder:rc1
             erda-registry.cn-hangzhou.cr.aliyuncs.com/terp/rn-builder:android35-gradle8.10-jdk17-node20.18
 
   cleanup:

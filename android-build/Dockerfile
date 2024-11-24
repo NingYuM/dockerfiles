@@ -16,8 +16,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 # set default build arguments
 ARG NODE_VERSION=20.18.0
 ARG CMAKE_VERSION=3.22.1
-# https://services.gradle.org/distributions/gradle-8.11.1-all.zip
-ARG GRADLE_VERSION=7.6.4
+# https://services.gradle.org/distributions/gradle-8.10.2-all.zip
+ARG GRADLE_VERSION=8.10.2
 ARG WATCHMAN_VERSION=4.9.0
 ARG ANDROID_BUILD_VERSION=35
 ARG NDK_VERSION=27.1.12297006
